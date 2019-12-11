@@ -68,6 +68,9 @@
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
+                                    <a class="dropdown-item" href="{{ route('users.edit-profile') }}">        
+                                        My Profile
+                                    </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
@@ -83,14 +86,14 @@
         <main class="py-4">
 
         @if (session()->has('success'))
-        <div class="alert alert-success">
-        {{session()->get('success')}}
-        </div>
+            <div class="alert alert-success">
+            {{session()->get('success')}}
+            </div>
         @endif
         @if (session()->has('error'))
-        <div class="alert alert-danger">
-        {{session()->get('error')}}
-        </div>
+            <div class="alert alert-danger">
+            {{session()->get('error')}}
+            </div>
         @endif
 
         @auth
@@ -98,6 +101,13 @@
                 <div class="row">
                     <div class="col-md-4">
                         <ul class="list-group">
+                        @if(auth()->user()->isAdmin())
+                            <li class="list-group-item">
+                                <a href="{{ route('users.index') }}">
+                                Users
+                                </a>
+                            </li>
+                        @endif
                         <li class="list-group-item">
                         <a href="{{ route('posts.index') }}">Posts</a>
                         </li>                        
