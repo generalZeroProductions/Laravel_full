@@ -47,8 +47,6 @@ class PostsController extends Controller
      */
     public function store(CreatePostsRequest $request)
     {
-
-        
         $image=$request->image->store('posts');
         
         $post = Post::create([
@@ -58,12 +56,12 @@ class PostsController extends Controller
             'image'=>'storage/'.$image,
             'published_at'=>$request->published_at,
             'category_id'=> $request->category,
-           
+            'user_id'=>auth()->user()->id       
             ]);
 
-            if ($request->tags){
-                $post->tags()->attach($request->tags);
-            }
+        if ($request->tags){
+            $post->tags()->attach($request->tags);
+        }
 
         session()->flash('success', 'Post has been created');
         return redirect(route('posts.index'));
@@ -142,8 +140,8 @@ class PostsController extends Controller
    */
   public function trashed()
   {
-      $trashed= Post::onlyTrashed()->get();
-      return view('posts.index')->withPosts($trashed);
+    $trashed= Post::onlyTrashed()->get();
+    return view('posts.index')->withPosts($trashed);
   }
 
   public function restore($id)
